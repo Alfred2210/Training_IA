@@ -1,0 +1,20 @@
+# Fichiers C++ et Visual Studio
+*.sln.docstates
+*.suo
+*.user
+*.vs/
+[Bb]in/
+[Dd]ebug/
+[Rr]elease/
+[Oo]bj/
+x64/
+Win32/
+*.ilk
+*.pdb
+*.tlog
+*.idb
+*.log
+*.ncb
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
