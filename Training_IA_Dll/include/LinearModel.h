@@ -2,7 +2,7 @@
 
 #include "../framework.h"
 #include <vector>
-#include "../include/Matrix.h"
+#include <Eigen/Dense>
 
 
 class EXPORT_API LinearModel
@@ -11,13 +11,13 @@ class EXPORT_API LinearModel
 public:
 
 	LinearModel(int features)
-		: m_weight(features,0.0), m_bias(0.0) {}
+		: m_weight(Eigen::VectorXd::Zero(features)), m_bias(0.0) {}
 
-	Matrix y_prediction(const Matrix& X);
-	void updateWeights(const Matrix& X, const Matrix& Y, double learning_rate);
-	Matrix normalize(const Matrix& X);
-private:
-	std::vector<double> m_weight;
+	virtual Eigen::VectorXd prediction(const Eigen::MatrixXd& X) const = 0;
+	virtual void updateWeights(const Eigen::MatrixXd& X, const Eigen::VectorXd& Y, double learning_rate)  = 0;
+
+protected:
+	Eigen::VectorXd m_weight;
 	double m_bias;
 
 };
