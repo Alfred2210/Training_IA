@@ -11,14 +11,22 @@ class EXPORT_API LinearModel
 public:
 
 	LinearModel(int features)
-		: m_weight(Eigen::VectorXd::Zero(features)), m_bias(0.0) {}
+		: m_weight(Eigen::VectorXd::Zero(features)), m_bias(0.0) {
+	}
 
 	virtual Eigen::VectorXd prediction(const Eigen::MatrixXd& X) const = 0;
-	virtual void updateWeights(const Eigen::MatrixXd& X, const Eigen::VectorXd& Y, double learning_rate)  = 0;
+	virtual void updateWeights(const Eigen::MatrixXd& X, const Eigen::VectorXd& Y) = 0;
+
+	void set_learning_rate(double learing_rate);
+	void set_iteration(int iteration);
+	Eigen::VectorXd get_weight() const;
+	double get_bias() const;
 
 protected:
 	Eigen::VectorXd m_weight;
 	double m_bias;
+	double m_learning_rate;
+	int m_iteration;
 
 };
 

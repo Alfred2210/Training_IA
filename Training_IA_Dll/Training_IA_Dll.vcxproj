@@ -24,6 +24,7 @@
     <ProjectGuid>{e5aa7e12-41ac-4750-adcd-6a1b33fb6e2a}</ProjectGuid>
     <RootNamespace>TrainingIADll</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Training_IA</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -147,7 +148,8 @@
     <ClInclude Include="include\FileUtils.h" />
     <ClInclude Include="include\LinearModel.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="include\Perceptron.h" />
+    <ClInclude Include="include\Classification.h" />
+    <ClInclude Include="include\Regression.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -157,7 +159,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Perceptron.cpp" />
+    <ClCompile Include="src\DLL_Wrapper.cpp" />
+    <ClCompile Include="src\LinearModel.cpp" />
+    <ClCompile Include="src\Regression.cpp" />
+    <ClCompile Include="src\Classification.cpp" />
     <ClCompile Include="src\FileUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
