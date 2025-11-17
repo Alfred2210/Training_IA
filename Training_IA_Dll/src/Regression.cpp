@@ -29,7 +29,8 @@ void Regression::updateWeights(const Eigen::MatrixXd& X, const Eigen::VectorXd& 
 	Eigen::VectorXd XT_Y = Xt.transpose() * Y;    
 
 	//opearation inverse
-	Eigen::VectorXd W_full = X_carre.inverse()*XT_Y;
+	//Eigen::VectorXd W_full = X_carre.inverse()*XT_Y; -> fait crash 
+	Eigen::VectorXd W_full = X_carre.ldlt().solve(XT_Y);
 	m_bias = W_full[0];
 	m_weight = W_full.tail(D);
 }
