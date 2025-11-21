@@ -2,7 +2,7 @@
 #include <Eigen/Dense>
 
 
-// neurons_per_layer = { donnes d'entree , couche chachee, donnes de sortie }
+////// neurons_per_layer = { donnes d'entree , couche cachée, donnes de sortie }
 
 PMC::PMC(const std::vector<int>& neurons_per_layer)
 	: m_neurons_per_layer(neurons_per_layer),
@@ -14,7 +14,7 @@ PMC::PMC(const std::vector<int>& neurons_per_layer)
 	for (int i = 0; i < L; i++)
 	{
 		int input_size = m_neurons_per_layer[i] + 1; // debut de la couche entree + le biais 
-		int output_size = m_neurons_per_layer[i + 1]; //  la couche cachee ou fin 
+		int output_size = m_neurons_per_layer[i + 1]; //  la couche cachée ou fin 
 
 		// initialisation des poids avec des valeurs aléatoires
 		Eigen::MatrixXd weight_matrix = Eigen::MatrixXd::Random(output_size, input_size); // destination et source == lignes = destination/output et colonnes = sources/input
@@ -48,12 +48,12 @@ Eigen::VectorXd PMC::propagate(const Eigen::VectorXd& inputs, bool is_classifica
 		Eigen::VectorXd signal = m_weight[i] * m_outputs[i];
 		Eigen::VectorXd x_result;
 
-		int is_last_layer = (i == L - 1); // si c'est la derniere couche
+		int is_last_layer = (i == L - 1); // si c'est la dernière couche
 
 		//  Tanh SI : classification ou  Pas la dernière couche
 		if (is_classification || !is_last_layer)
 		{
-			//capture le résultat retourné !
+			//capture le résultat retourné 
 			x_result = signal.unaryExpr([](double val) { return std::tanh(val); });
 		}
 		else
@@ -78,5 +78,53 @@ Eigen::VectorXd PMC::predict(const Eigen::VectorXd& inputs, bool is_classificati
 	propagate(inputs, is_classification);
 
 	return m_outputs.back().head(m_neurons_per_layer.back()); // retourne les sorties sans le biais
+}
+
+void PMC::train(const std::vector<Eigen::VectorXd>& all_sample_inputs, const std::vector<Eigen::VectorXd>& all_samples_expected_outputs, bool is_classification, int num_iterations, double learning_rate)
+{
+
+	for (int iter = 0; iter < num_iterations; iter++) {
+
+		int k = std::rand() % all_sample_inputs.size();
+		
+		const Eigen::VectorXd& inputs_k = all_sample_inputs[k]; // Xij
+		const Eigen::VectorXd& expected_outputs_k = all_samples_expected_outputs[k]; // Yij
+
+		Eigen::VectorXd predicted_outputs = propagate(inputs_k, is_classification); // mise a jour de Xij
+
+		// Calcul des deltas pour la couche de sortie (étape 1 du pdf)
+		int L = m_weight.size();
+		Eigen::VectorXd output_errors = predicted_outputs - expected_outputs_k;
+
+		if (is_classification)
+		{
+			m_deltas[L].head(output_errors.size()) = (1 - predicted_outputs.array().square()) * output_errors.array(); // classification on prends la tete (head) car pas de biais
+		}
+		else
+		{
+			m_deltas[L].head(output_errors.size()) = output_errors; // régression  on prends la tete (head) car pas de biais
+		}
+		//étape de rétropropagation(étape 2 du pdf)
+		for (int i=L-1; i >=0 ; i--)
+		{
+
+			Eigen::VectorXd next_layer = m_deltas[i + 1].head(m_neurons_per_layer[i + 1]); // sans biais
+			Eigen::VectorXd total = m_weight[i].transpose() * next_layer;
+
+			total = (1.0 - m_outputs[i].array().square()) * total.array();
+			m_deltas[i].head(total.size()) = total;
+
+		}
+
+		// Mise à jour des poids (étape 3 du pdf)
+		for (int i = 0; i <L; i++)
+		{
+			m_weight[i] -= learning_rate * (m_deltas[i + 1].head(m_neurons_per_layer[i + 1]) * m_outputs[i].transpose()); // dans delta on prends la tete (head) car pas de biais
+
+		}
+		
+	}
+	
+
 }
 

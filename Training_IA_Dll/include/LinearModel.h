@@ -13,7 +13,7 @@ public:
 	LinearModel(int features)
 		: m_weight(Eigen::VectorXd::Zero(features)), m_bias(0.0) {
 	}
-
+	virtual ~LinearModel() = default;
 	virtual Eigen::VectorXd prediction(const Eigen::MatrixXd& X) const = 0;
 	virtual void updateWeights(const Eigen::MatrixXd& X, const Eigen::VectorXd& Y) = 0;
 
