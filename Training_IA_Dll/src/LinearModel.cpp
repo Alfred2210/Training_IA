@@ -18,3 +18,13 @@ double LinearModel::get_bias() const
 {
 	return m_bias;
 }
+
+void LinearModel::set_weight(const Eigen::VectorXd& weight)
+{
+	m_weight = weight;
+}
+
+void LinearModel::set_bias(double bias)
+{
+	m_bias = bias;
+}

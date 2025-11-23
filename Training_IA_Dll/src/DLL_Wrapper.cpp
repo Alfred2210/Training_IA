@@ -12,9 +12,6 @@ using EigenMapVector = Eigen::Map<Eigen::VectorXd>;
 
 // classification
 
-
-
-
 extern "C" __declspec(dllexport)
 void trainClassification(double* X_data, double* Y_data,int N, int D,double learning_rate,int num_iteration,double* out_W_and_b)
 {
@@ -44,17 +41,13 @@ void predictClassification(double* X_test_data, int N_test, int D, double bias, 
 
     Classification model(D);
 
-    model.prediction(X_test);
+    model.set_weight(W_map);
+    model.set_bias(bias);
 
-    // recalculer la prédiction : y = Sign(X*W + b)
-    Eigen::VectorXd scores = X_test * W_map;
-    scores.array() += bias;
-    Eigen::VectorXd predictions = scores.unaryExpr([](double x) {
-        return x >= 0.0 ? 1.0 : -1.0;
-        });
-
-    EigenMapVector(output_prediction, N_test) = predictions;
+    Eigen::VectorXd prediction = model.prediction(X_test);
+    EigenMapVector(output_prediction, N_test) = prediction;
 }
+
 //regression
 extern "C" __declspec(dllexport)
 void trainRegression(double* X_data, double* Y_data, int N, int D, double* out_W_and_b)

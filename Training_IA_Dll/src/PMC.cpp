@@ -9,7 +9,7 @@ PMC::PMC(const std::vector<int>& neurons_per_layer)
 	m_bias(0.0),                // initialisation de m_bias
 	m_learning_rate(0.01)       // initialisation de m_learning_rate 
 {
-	int L = neurons_per_layer.size() - 1;
+	int L = neurons_per_layer.size() - 1; // nombre de couches de poids
 
 	for (int i = 0; i < L; i++)
 	{

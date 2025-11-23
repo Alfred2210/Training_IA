@@ -11,7 +11,7 @@ class EXPORT_API LinearModel
 public:
 
 	LinearModel(int features)
-		: m_weight(Eigen::VectorXd::Zero(features)), m_bias(0.0) {
+		: m_weight(Eigen::VectorXd::Random(features)), m_bias(0.0) {
 	}
 	virtual ~LinearModel() = default;
 	virtual Eigen::VectorXd prediction(const Eigen::MatrixXd& X) const = 0;
@@ -21,6 +21,8 @@ public:
 	void set_iteration(int iteration);
 	Eigen::VectorXd get_weight() const;
 	double get_bias() const;
+	void set_weight(const Eigen::VectorXd& weight);
+	void set_bias(double bias);
 
 protected:
 	Eigen::VectorXd m_weight;
