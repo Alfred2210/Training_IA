@@ -4,11 +4,9 @@
 #include <Eigen/Dense>
 
 // Utilisation de Eigen::Map pour mapper les tableaux C vers des objets Eigen
-// (permet d'éviter les copies de données)
-using EigenMapMatrix = Eigen::Map<Eigen::MatrixXd>;
+//using EigenMapMatrix = Eigen::Map<Eigen::MatrixXd>;
 using EigenMapVector = Eigen::Map<Eigen::VectorXd>;
-
-
+using EigenMapMatrix = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
 
 // classification
 

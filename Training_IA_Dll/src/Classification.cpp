@@ -21,6 +21,9 @@ void Classification::updateWeights(const Eigen::MatrixXd& X, const Eigen::Vector
 {
 	//regle de rosenblatt
 
+	m_weight.setZero();
+	m_bias = 0.0;
+
 	for (size_t iteration = 0; iteration < m_iteration; iteration++)
 	{
 		for (int i = 0; i < X.rows(); ++i)
